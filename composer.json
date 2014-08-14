@@ -1,0 +1,29 @@
+{
+    "name": "hatframework/hat-resource-api",
+    "type": "library",
+    "description": "Resource package integration with aws amazon services",
+    "keywords": ["ami","amazon"],
+    "homepage": "https://github.com/hat-framework/hat-resource-api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thompson Filgueiras",
+            "email": "thom@hat-framework.org",
+            "homepage": "http://hat-framework.org",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "ext-curl": "*",
+        "ext-json": "*",
+        "php": ">=5.3.0",
+        "aws/aws-sdk-php": "dev-master",
+        "tpyo/amazon-s3-php-class":"*",
+        "hat-framework/corehat":"*"
+    },
+    "autoload": {
+        "psr-0": {
+            "resource\\api\\": "src/"
+        }
+    }
+}
