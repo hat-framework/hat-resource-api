@@ -19,7 +19,7 @@
         "php": ">=5.3.0",
         "aws/aws-sdk-php": "dev-master",
         "tpyo/amazon-s3-php-class":"*",
-        "hat-framework/corehat":"*"
+        "hatframework/corehat":"*"
     },
     "autoload": {
         "psr-0": {
