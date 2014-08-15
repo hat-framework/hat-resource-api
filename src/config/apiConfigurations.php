@@ -45,7 +45,7 @@ class apiConfigurations extends \classes\Classes\Options{
                 
                 'AWS_DEFAULT_HOST' => array(
                     'name'          => 'AWS_DEFAULT_HOST',
-                    'label'         => 'Default Bucket name',
+                    'label'         => 'Default Hostname',
                     'type'          => 'varchar',//varchar, text, enum
                     'default'       => '.s3.amazonaws.com',
                     'description'   => 'Preencha com BUCKET_NAME.".s3.amazonaws.com"',
