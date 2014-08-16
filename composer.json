@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "resources\\api\\": "src/"
+            "resource\\api\\": "src/"
         }
     }
 }
