@@ -1,11 +1,10 @@
 <?php
 
 require_once '../../autoload.php';
-require_once '../../../../vendor/autoload.php';
 
 $uploadFile = dirname(__FILE__).DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR.'empty.html'; // File to upload, we'll use the S3 class since it exists
 $filename   = 'myFolder/mySampleFile';
-$aws = new lib\aws\awsS3Manager();
+$aws = new resources\api\awsS3Manager();
 
 //$aws->uploadDirectory(dirname(__FILE__), 'testFolder');
 if(false === $aws->setFile($filename, $uploadFile)){
