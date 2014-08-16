@@ -1,6 +1,6 @@
 <?php
 
-namespace lib\aws;
+namespace resource\api;
 class awsS3Manager{
     
     private $s3     = null;
