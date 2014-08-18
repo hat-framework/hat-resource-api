@@ -18,8 +18,7 @@
         "ext-json": "*",
         "php": ">=5.3.0",
         "aws/aws-sdk-php": "dev-master",
-        "tpyo/amazon-s3-php-class":"*",
-        "hatframework/hatclasses":"dev-master"
+        "tpyo/amazon-s3-php-class":"*"
     },
     "autoload": {
         "psr-4": {
