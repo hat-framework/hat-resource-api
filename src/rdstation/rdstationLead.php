@@ -38,7 +38,7 @@ private function addLeadConversionToRdstationCrm( $rdstation_token, $identifier,
           $data_array["_wpcf7_is_ajax_call"],$data_array["antispam"]);
 
     if ( !empty($data_array["token_rdstation"]) && !( empty($data_array["email"]) && empty($data_array["email_lead"]) ) ) {
-      echo simple_curl($this->api_url, $data_array);
+      simple_curl($this->api_url, $data_array);
     }
   } catch (Exception $e) { }
 }

@@ -55,5 +55,37 @@ class apiConfigurations extends \classes\Classes\Options{
                 
             ),
         ),
+        
+        'api/rdstation' => array(
+            'title'        => 'Opções do RD STATION',
+            'descricao'    => 'Configurações de acesso do RD Station',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/rdstation',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                
+                'RDSTATION_TOKEN' => array(
+                    'name'          => 'RDSTATION_TOKEN',
+                    'label'         => 'Token de Acesso',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Token de acesso ao serviço da RD Station',
+                    'value'         => '',
+                    'value_default' => ''
+                ), 
+                
+                'RDSTATION_IDENTIFY' => array(
+                    'name'          => 'RDSTATION_IDENTIFY',
+                    'label'         => 'identificador de Acesso',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Identificador de acesso ao serviço da RD Station',
+                    'value'         => '',
+                    'value_default' => 'formulario-finance-e'
+                ),
+            ),
+        ),
+        
     );
 }
