@@ -1,6 +1,7 @@
 <?php
 
 namespace resource\api\aws;
+require_once dirname(__FILE__) .'/functions.php';
 class awsS3Manager{
     
     private $s3     = null;
