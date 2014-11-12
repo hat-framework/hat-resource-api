@@ -87,5 +87,47 @@ class apiConfigurations extends \classes\Classes\Options{
             ),
         ),
         
+        'api/ga' => array(
+            'title'        => 'Opções do Google Analytics',
+            'descricao'    => 'Configurações do Google Analytics',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/ga',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_GA_KEY' => array(
+                    'name'          => 'API_GA_KEY',
+                    'label'         => 'Analytics Identifier',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Chave de acesso ao google analytics',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+            )
+        ),
+        
+        'api/olark' => array(
+            'title'        => 'Opções do Olark',
+            'descricao'    => 'Configurações do Olark',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/olark',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_OLARK_KEY' => array(
+                    'name'          => 'API_OLARK_KEY',
+                    'label'         => 'olark Key',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Chave de acesso ao olark',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+            )
+        )
+        
     );
 }
