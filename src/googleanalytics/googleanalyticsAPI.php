@@ -14,7 +14,9 @@ class googleanalyticsAPI extends \classes\Interfaces\resource{
         $this->LoadResource("html", 'html')->LoadJs($url);
         
         $u = $_SERVER['SERVER_NAME'] ;
-        $this->html->LoadJsFunction("ga('create', '$key', '$u');ga('send', 'pageview');");
+        $cod   = \usuario_loginModel::CodUsuario();
+        $extra = ($cod !== 0)?"ga('set', '&uid', '$cod');":"";
+        $this->html->LoadJsFunction("ga('create', '$key', '$u');ga('send', 'pageview'); $extra");
     }
     
 }
