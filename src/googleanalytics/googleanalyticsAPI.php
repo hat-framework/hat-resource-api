@@ -7,7 +7,7 @@ class googleanalyticsAPI extends \classes\Interfaces\resource{
         if($loaded === true){return;}
         else{$loaded = true;}
         if(usuario_loginModel::IsWebmaster()){return;}
-        if(strstr($_SERVER['HTTP_HOST'], ".") !== false){return;}
+        if(strstr($_SERVER['HTTP_HOST'], ".") === false){return;}
         
         if($key === ""){
             if(!defined('API_GA_KEY')){return;}

@@ -4,6 +4,50 @@ class apiConfigurations extends \classes\Classes\Options{
                 
     protected $files   = array(
         
+        'api/facebook' => array(
+            'title'        => 'Opções do Facebook',
+            'descricao'    => 'Configurações do Facebook',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/facebook',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+              
+                'API_FACEBOOK_APPID' => array(
+                    'name'          => 'API_FACEBOOK_APPID',
+                    'label'         => 'Id do aplicativo do Facebook',
+                    'type'          => 'varchar',//varchar, text, enum
+                ),
+                
+                'API_FACEBOOK_APPSECRET' => array(
+                    'name'          => 'API_FACEBOOK_APPSECRET',
+                    'label'         => 'Chave secreta do aplicativo do Facebook',
+                    'type'          => 'varchar',//varchar, text, enum
+                ),
+            )
+        ),
+        
+        'api/ga' => array(
+            'title'        => 'Opções do Google Analytics',
+            'descricao'    => 'Configurações do Google Analytics',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/ga',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_GA_KEY' => array(
+                    'name'          => 'API_GA_KEY',
+                    'label'         => 'Analytics Identifier',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Chave de acesso ao google analytics',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+            )
+        ),
+        
         'api/aws' => array(
             'title'        => 'Opções do AWS',
             'descricao'    => 'Configurações de acesso do AWS',
@@ -87,27 +131,6 @@ class apiConfigurations extends \classes\Classes\Options{
             ),
         ),
         
-        'api/ga' => array(
-            'title'        => 'Opções do Google Analytics',
-            'descricao'    => 'Configurações do Google Analytics',
-            'grupo'        => 'APIs Externas',
-            'type'         => 'resource', //config, plugin, jsplugin, template, resource
-            'referencia'   => 'api/ga',
-            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
-            'configs'      => array(
-                'API_GA_KEY' => array(
-                    'name'          => 'API_GA_KEY',
-                    'label'         => 'Analytics Identifier',
-                    'type'          => 'varchar',//varchar, text, enum
-                    'default'       => '',
-                    'description'   => 'Chave de acesso ao google analytics',
-                    'value'         => '',
-                    'value_default' => ''
-                ),
-                
-            )
-        ),
-        
         'api/olark' => array(
             'title'        => 'Opções do Olark',
             'descricao'    => 'Configurações do Olark',
@@ -120,10 +143,7 @@ class apiConfigurations extends \classes\Classes\Options{
                     'name'          => 'API_OLARK_KEY',
                     'label'         => 'olark Key',
                     'type'          => 'varchar',//varchar, text, enum
-                    'default'       => '',
                     'description'   => 'Chave de acesso ao olark',
-                    'value'         => '',
-                    'value_default' => ''
                 ),
                 
             )
