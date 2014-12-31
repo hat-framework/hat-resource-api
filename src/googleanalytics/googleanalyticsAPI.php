@@ -12,7 +12,7 @@ class googleanalyticsAPI extends \classes\Interfaces\resource{
         $key   = API_GA_KEY;
         $u     = $_SERVER['SERVER_NAME'] ;
         $cod   = \usuario_loginModel::CodUsuario();
-        $extra = ($cod !== 0)?"ga('set', '&uid', '$cod'); ga('set', 'dimension2', '$u');":"";
+        $extra = ($cod !== 0)?"ga('set', '&uid', '$cod'); ga('set', 'dimension2', '$cod');":"";
         $pname = $this->LoadModel('usuario/perfil', 'perf')->getField(usuario_loginModel::CodPerfil(), 'usuario_perfil_nome');
         
         $str   = "<script type='text/javascript'>".
