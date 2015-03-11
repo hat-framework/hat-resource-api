@@ -2,7 +2,7 @@
 
 class googleanalyticsAPI extends \classes\Interfaces\resource{
     
-    public function startAnalytics($print = true){
+    public function startAnalytics($print = true, $angularApp = array()){
         static $loaded = false;
         if($loaded === true){return;}
         else{$loaded = true;}
@@ -14,15 +14,15 @@ class googleanalyticsAPI extends \classes\Interfaces\resource{
         $cod   = \usuario_loginModel::CodUsuario();
         $extra = ($cod !== 0)?"ga('set', '&uid', '$cod'); ga('set', 'dimension2', '$cod');":"";
         $pname = $this->LoadModel('usuario/perfil', 'perf')->getField(usuario_loginModel::CodPerfil(), 'usuario_perfil_nome');
-        
+        $send  = !in_array(CURRENT_CANONICAL_PAGE, $angularApp)?"ga('send', 'pageview');":"";
         $str   = "<script type='text/javascript'>".
              "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){".
              "(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),".
              "m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)".
              "})(window,document,'script','//www.google-analytics.com/analytics.js','ga');".
-             "ga('create', '$key', '$u'); ga('require', 'displayfeatures'); $extra ga('send', 'pageview');".
+             "ga('create', '$key', '$u'); ga('require', 'displayfeatures'); $extra ".
              "ga('set', 'dimension1', '$pname');".
-             "ga('_setCustomVar',1,'perfil','$pname')".
+             "ga('_setCustomVar',1,'perfil','$pname'); $send".
              "</script>";
         return $this->printstr($print, $str);
     }
