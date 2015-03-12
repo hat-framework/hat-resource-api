@@ -14,7 +14,7 @@ class googleanalyticsAPI extends \classes\Interfaces\resource{
         $cod   = \usuario_loginModel::CodUsuario();
         $extra = ($cod !== 0)?"ga('set', '&uid', '$cod'); ga('set', 'dimension2', '$cod');":"";
         $pname = $this->LoadModel('usuario/perfil', 'perf')->getField(usuario_loginModel::CodPerfil(), 'usuario_perfil_nome');
-        $send  = !in_array(CURRENT_CANONICAL_PAGE, $angularApp)?"ga('send', 'pageview');":"";
+        $send  = (!is_array($angularApp) || !in_array(CURRENT_CANONICAL_PAGE, $angularApp))?"ga('send', 'pageview');":"";
         $str   = "<script type='text/javascript'>".
              "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){".
              "(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),".
