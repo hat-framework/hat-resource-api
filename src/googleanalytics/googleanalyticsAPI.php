@@ -1,5 +1,6 @@
 <?php
 
+if(!defined('CURRENT_CANONICAL_PAGE')){define('CURRENT_CANONICAL_PAGE', "");}
 class googleanalyticsAPI extends \classes\Interfaces\resource{
     
     public function startAnalytics($print = true, $angularApp = array()){
