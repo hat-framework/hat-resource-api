@@ -10,6 +10,10 @@ class facebookAPI extends \classes\Interfaces\resource{
         return $this->load(__FUNCTION__);
     }
     
+    public function likebox(){
+        return $this->load(__FUNCTION__);
+    }
+    
     private function load($fn){
         $class = "facebook".  ucfirst($fn);
         $path = dirname(__FILE__)."/classes/$class.php";

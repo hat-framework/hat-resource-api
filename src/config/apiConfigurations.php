@@ -4,29 +4,6 @@ class apiConfigurations extends \classes\Classes\Options{
                 
     protected $files   = array(
         
-        'api/facebook' => array(
-            'title'        => 'Opções do Facebook',
-            'descricao'    => 'Configurações do Facebook',
-            'grupo'        => 'APIs Externas',
-            'type'         => 'resource', //config, plugin, jsplugin, template, resource
-            'referencia'   => 'api/facebook',
-            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
-            'configs'      => array(
-              
-                'API_FACEBOOK_APPID' => array(
-                    'name'          => 'API_FACEBOOK_APPID',
-                    'label'         => 'Id do aplicativo do Facebook',
-                    'type'          => 'varchar',//varchar, text, enum
-                ),
-                
-                'API_FACEBOOK_APPSECRET' => array(
-                    'name'          => 'API_FACEBOOK_APPSECRET',
-                    'label'         => 'Chave secreta do aplicativo do Facebook',
-                    'type'          => 'varchar',//varchar, text, enum
-                ),
-            )
-        ),
-        
         'api/ga' => array(
             'title'        => 'Opções do Google Analytics',
             'descricao'    => 'Configurações do Google Analytics',
@@ -147,7 +124,77 @@ class apiConfigurations extends \classes\Classes\Options{
                 ),
                 
             )
-        )
+        ),
+        
+        'api/facebook' => array(
+            'title'        => 'Opções do Facebook',
+            'descricao'    => 'Configurações do Facebook',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/facebook',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_FACEBOOK_APPID' => array(
+                    'name'          => 'API_FACEBOOK_APPID',
+                    'label'         => 'Id do aplicativo do Facebook',
+                    'type'          => 'varchar',//varchar, text, enum
+                ),
+                
+                'API_FACEBOOK_APPSECRET' => array(
+                    'name'          => 'API_FACEBOOK_APPSECRET',
+                    'label'         => 'Chave secreta do aplicativo do Facebook',
+                    'type'          => 'varchar',//varchar, text, enum
+                ),
+                
+                'API_FACEBOOK_FANPAGE' => array(
+                    'name'          => 'API_FACEBOOK_FANPAGE',
+                    'label'         => 'Link da fanpage do facebook',
+                    'type'          => 'varchar',//varchar, text, enum
+                ),
+            )
+        ),
+        
+        'api/yt' => array(
+            'title'        => 'YouTube API',
+            'descricao'    => 'Configurações do YouTube',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/yt',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_YT_ID' => array(
+                    'name'          => 'API_YT_ID',
+                    'label'         => 'ID da API do youtube',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => "Acesse <a href=\"https://www.youtube.com/account_advanced\">https://www.youtube.com/account_advanced</a> para obter sua API ID",
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+            )
+        ),
+        
+        'api/lkd' => array(
+            'title'        => 'Linkedin API',
+            'descricao'    => 'Configurações do YouTube',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/lkd',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_LKD_ID' => array(
+                    'name'          => 'API_LKD_ID',
+                    'label'         => 'ID da API do Linkedin',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => "",
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+            )
+        ),
         
     );
 }
