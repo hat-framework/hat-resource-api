@@ -61,7 +61,7 @@ if(!function_exists('mime_content_type')) {
         );
 
         $e   = explode('.',$filename);
-        $ext = strtolower(array_pop());
+        $ext = strtolower(array_pop($e));
         if (array_key_exists($ext, $mime_types)) {
             return $mime_types[$ext];
         }
