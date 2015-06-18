@@ -127,4 +127,16 @@ class awsS3Manager{
             return $this->exception($ex);
         }
     }
+    
+    public function dropFileWithoutIntegrity($name, $maxsize = 20){
+        $info = $this->getFileInfo($name);
+        if(false === $info){return false;}
+        
+        if($info['size'] <= $maxsize){
+            $this->deleteFile($name);
+            $this->error = "File $name é menor do que $maxsize";
+            return false;
+        }
+        return true;
+    }
 }
