@@ -1,6 +1,6 @@
 <?php
 
-namespace resource\api\rdstation;
+namespace resource\api\emailMarketing;
 class rdstationLead{
     
     public $api_url = "http://www.rdstation.com.br/api/1.2/conversions";

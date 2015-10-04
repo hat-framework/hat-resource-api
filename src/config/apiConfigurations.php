@@ -80,10 +80,10 @@ class apiConfigurations extends \classes\Classes\Options{
         'api/rdstation' => array(
             'title'        => 'Opções do RD STATION',
             'descricao'    => 'Configurações de acesso do RD Station',
-            'grupo'        => 'APIs Externas',
+            'grupo'        => 'API de Email Marketing',
             'type'         => 'resource', //config, plugin, jsplugin, template, resource
             'referencia'   => 'api/rdstation',
-            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
             'configs'      => array(
                 
                 'RDSTATION_TOKEN' => array(
@@ -104,6 +104,37 @@ class apiConfigurations extends \classes\Classes\Options{
                     'description'   => 'Identificador de acesso ao serviço da RD Station',
                     'value'         => '',
                     'value_default' => 'formulario-finance-e'
+                ),
+            ),
+        ),
+        
+        'api/egoi' => array(
+            'title'        => 'Opções do E-GOI',
+            'descricao'    => 'Configurações de acesso do E-GOI',
+            'grupo'        => 'API de Email Marketing',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/egoi',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                
+                'EMAIL_MARKETING_EGOI_KEY' => array(
+                    'name'          => 'EMAIL_MARKETING_EGOI_KEY',
+                    'label'         => 'Token de Acesso',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Token de acesso ao serviço do EGOI',
+                    'value'         => '',
+                    'value_default' => ''
+                ), 
+                
+                'EMAIL_MARKETING_EGOI_LISTID' => array(
+                    'name'          => 'EMAIL_MARKETING_EGOI_LISTID',
+                    'label'         => 'ID da Lista de Email Padrão',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Esta lista será utilizada no cadastro',
+                    'value'         => '',
+                    'value_default' => ''
                 ),
             ),
         ),
