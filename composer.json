@@ -20,12 +20,6 @@
         "aws/aws-sdk-php": "2.8.10",
         "tpyo/amazon-s3-php-class":"0.5.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/alexndreazevedo/egoi-api-php"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "resource\\api\\": "src/"
