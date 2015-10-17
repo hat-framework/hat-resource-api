@@ -9,7 +9,6 @@ class egoiLeadAPI{
             if(false !== $url){
                 $bool = $this->addLeadHtml($data_array, $listID, $formID);
                 if(true === $bool){return true;}
-                die("euta");
             }
         }
         return $this->addLeadAPI($data_array, $listID, $formID);
