@@ -118,6 +118,7 @@ class apiConfigurations extends \classes\Classes\Options{
             'configs'      => array(
                 
                 'EMAIL_MARKETING_EGOI_KEY' => array(
+                    'fieldset'      => 'Integração Geral',
                     'name'          => 'EMAIL_MARKETING_EGOI_KEY',
                     'label'         => 'Token de Acesso',
                     'type'          => 'varchar',//varchar, text, enum
@@ -143,6 +144,46 @@ class apiConfigurations extends \classes\Classes\Options{
                     'type'          => 'varchar',//varchar, text, enum
                     'default'       => '',
                     'description'   => 'Este form irá te auxiliar na automação das mensagens para os seus leads',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+                'EMAIL_MARKETING_EGOI_URL' => array(
+                    'fieldset'      => 'Integração via formulário HTML',
+                    'name'          => 'EMAIL_MARKETING_EGOI_URL',
+                    'label'         => 'Url de integração de formulário avançado',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Pegue uma url do formulário avançado',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+                'EMAIL_MARKETING_EGOI_CLIENT' => array(
+                    'name'          => 'EMAIL_MARKETING_EGOI_CLIENT',
+                    'label'         => 'Client do formulário avançado',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => '',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+                'EMAIL_MARKETING_EGOI_NAME_FIELD' => array(
+                    'name'          => 'EMAIL_MARKETING_EGOI_NAME_FIELD',
+                    'label'         => 'Nome do campo first_name no formulário',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => '',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                'EMAIL_MARKETING_EGOI_EMAIL_FIELD' => array(
+                    'name'          => 'EMAIL_MARKETING_EGOI_EMAIL_FIELD',
+                    'label'         => 'Nome do campo email no formulário',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => '',
                     'value'         => '',
                     'value_default' => ''
                 ),
