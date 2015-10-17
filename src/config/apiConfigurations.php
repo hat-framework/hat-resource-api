@@ -136,6 +136,16 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
+                
+                'EMAIL_MARKETING_EGOI_FORMID' => array(
+                    'name'          => 'EMAIL_MARKETING_EGOI_FORMID',
+                    'label'         => 'ID do formulário de Email Padrão',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Este form irá te auxiliar na automação das mensagens para os seus leads',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
             ),
         ),
         
