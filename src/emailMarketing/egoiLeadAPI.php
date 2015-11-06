@@ -4,6 +4,7 @@ namespace resource\api\emailMarketing;
 class egoiLeadAPI{
     
     public function addLead($data_array, $listID = "", $formID = "") {
+        if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return;}
         if($listID == "" && $formID == ""){
             $url = $this->getURL();
             if(false !== $url){
@@ -98,6 +99,47 @@ class egoiLeadAPI{
                         if(!defined('EMAIL_MARKETING_EGOI_EMAIL_FIELD') || EMAIL_MARKETING_EGOI_EMAIL_FIELD == ''){return;}
                         $emailField = EMAIL_MARKETING_EGOI_EMAIL_FIELD;
                     }
+                
 
+    public function addUserTag($tagname, $user_email, $listId = ""){
+        if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return;}
+        $this->getListID($listId);
+        if(false == $listId){return false;}
+        $id  = $this->getTagId($tagname);
+        $uid = $this->getUserId($user_email, $listId);
+        if($uid == ""){return false;}
+
+        $api    = new \Egoi\Api\SoapImpl();
+        $temp   = $api->attachTag(array(
+            "apikey" => EMAIL_MARKETING_EGOI_KEY,
+            'tag'    => $id,
+            'target' => array($uid),
+            'type'   => 'subscriber',
+            'listID' => $listId
+        ));
+        return (isset($temp['RESULT']) && $temp['RESULT'] == "OK");
+    }
+    
+            private function getTagId($tagname){
+                $api    = new \Egoi\Api\SoapImpl();
+                $result = $api->getTags(array("apikey" => EMAIL_MARKETING_EGOI_KEY));
+                foreach($result['TAG_LIST'] as $tagarray){
+                    if($tagarray['NAME'] == $tagname){return "{$tagarray['ID']}";}
+                }
+                $temp = $api->addTag(array(
+                    "apikey" => EMAIL_MARKETING_EGOI_KEY,
+                    'name'   => $tagname
+                ));
+                return (isset($temp['RESULT'])&&$temp['RESULT']=="OK"&&isset($temp['ID']))?$temp["ID"]:"";
+            }
+
+            private function getUserId($user_email, $listID){
+                $api    = new \Egoi\Api\SoapImpl();
+                $data_array['apikey']     = EMAIL_MARKETING_EGOI_KEY;
+                $data_array['listID']     = $listID;
+                $data_array['subscriber'] = $user_email;
+                $result = $api->subscriberData($data_array);
+                return (isset($result['subscriber'])&&isset($result['subscriber']['UID'])?$result['subscriber']['UID']:"");
+            }
     
 }
