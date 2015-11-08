@@ -15,13 +15,9 @@ class egoiLeadAPI extends \classes\Classes\Object{
     
     public function addLead($data_array, $listID = "", $formID = "") {
         if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return;}
-        if($listID == "" && $formID == ""){
-            $url = $this->getURL();
-            if(false !== $url){
-                $this->addLeadHtml($data_array, $listID, $formID);
-                if(true === $bool){return true;}
-            }
-        }
+        $url = $this->getURL();
+        if(false !== $url){$bool = $this->addLeadHtml($data_array, $listID, $formID);}
+        if($listID == "" && $formID == ""){return $bool;}
         return $this->addLeadAPI($data_array, $listID, $formID);
     }
     
@@ -118,7 +114,7 @@ class egoiLeadAPI extends \classes\Classes\Object{
         $id  = $this->getTagId($tagname);
         if($id == ""){return false;}
         
-        $uid = $this->getUsersIds($user_email);
+        $uid = $this->getUsersIds($user_email, $listId);
         if(empty($uid) || !is_array($uid)){return false;}
         
         $temp = $this->attachTag($id, $uid, $listId);
