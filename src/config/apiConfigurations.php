@@ -4,27 +4,6 @@ class apiConfigurations extends \classes\Classes\Options{
                 
     protected $files   = array(
         
-        'api/ga' => array(
-            'title'        => 'Opções do Google Analytics',
-            'descricao'    => 'Configurações do Google Analytics',
-            'grupo'        => 'APIs Externas',
-            'type'         => 'resource', //config, plugin, jsplugin, template, resource
-            'referencia'   => 'api/ga',
-            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
-            'configs'      => array(
-                'API_GA_KEY' => array(
-                    'name'          => 'API_GA_KEY',
-                    'label'         => 'Analytics Identifier',
-                    'type'          => 'varchar',//varchar, text, enum
-                    'default'       => '',
-                    'description'   => 'Chave de acesso ao google analytics',
-                    'value'         => '',
-                    'value_default' => ''
-                ),
-                
-            )
-        ),
-        
         'api/aws' => array(
             'title'        => 'Opções do AWS',
             'descricao'    => 'Configurações de acesso do AWS',
@@ -277,6 +256,49 @@ class apiConfigurations extends \classes\Classes\Options{
                 
             )
         ),
+        
+        'api/ga' => array(
+            'title'        => 'Opções do Google Analytics',
+            'descricao'    => 'Configurações do Google Analytics',
+            'grupo'        => 'Web Analytics API',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/ga',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_GA_KEY' => array(
+                    'name'          => 'API_GA_KEY',
+                    'label'         => 'Analytics Identifier',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Chave de acesso ao google analytics',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+            )
+        ),
+        
+        'api/luckorange' => array(
+            'title'        => 'Opções do Luck Orange',
+            'descricao'    => 'Configurações do Luck Orange',
+            'grupo'        => 'Web Analytics API',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/luckorange',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_LUCK_ORANGE_KEY' => array(
+                    'name'          => 'API_LUCK_ORANGE_KEY',
+                    'label'         => 'Lucky Orange Identifier',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Chave de acesso ao lucky orange',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+            )
+        ),
+        
         
     );
 }
