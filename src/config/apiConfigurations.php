@@ -87,6 +87,27 @@ class apiConfigurations extends \classes\Classes\Options{
             ),
         ),
         
+        'api/agendor' => array(
+            'title'        => 'Opções do Agendor',
+            'descricao'    => 'Configurações de acesso do Agendor',
+            'grupo'        => 'API de Email Marketing',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/agendor',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                
+                'AGENDOR_TOKEN' => array(
+                    'name'          => 'AGENDOR_TOKEN',
+                    'label'         => 'Token de Acesso',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Para obter o token de acesso: entre no agendor, vá em menu > Integrações',
+                    'value'         => '',
+                    'value_default' => ''
+                )
+            ),
+        ),
+        
         'api/egoi' => array(
             'title'        => 'Opções do E-GOI',
             'descricao'    => 'Configurações de acesso do E-GOI',
