@@ -17,7 +17,7 @@ class agendorLeadAPI extends \classes\Classes\Object{
         
         /*Agendor ainda não aceita integração com nono dígito na API*/
         $int = filter_var(str_replace('-', '', $phone), FILTER_SANITIZE_NUMBER_INT);
-        if(strlen($int) > 9){
+        if(strlen($int) > 10){
             $int = substr($int, 0, 2) . substr($int, 3, strlen($int)-1) ;
         }
         
@@ -71,7 +71,11 @@ class agendorLeadAPI extends \classes\Classes\Object{
                 curl_close($ch);
                 return $response;
             }
-                 
+            
+    public function getData(){
+        return $this->data;
+    }
+            
     private function _set($key, $val){
         $this->data[$key] = $val;
         return $this;
