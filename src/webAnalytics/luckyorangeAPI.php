@@ -13,7 +13,7 @@ class luckyorangeAPI extends \classes\Interfaces\resource{
         $key = \classes\Classes\cookie::getVar('lo_ukey');
         if($key == ""){
             $key = $this->LoadModel('usuario/acesso', 'ua')->getCookieKey(0);
-            \classes\Classes\cookie::setVar('lo_ukey', $cod);
+            \classes\Classes\cookie::setVar('lo_ukey', $key);
         }
         $str2 = 'window.__wtw_custom_user_data.userkey = "'.$key.'";';
         
