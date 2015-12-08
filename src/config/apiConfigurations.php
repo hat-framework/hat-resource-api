@@ -320,6 +320,27 @@ class apiConfigurations extends \classes\Classes\Options{
             )
         ),
         
+        'api/adwords' => array(
+            'title'        => 'Google AdWords',
+            'descricao'    => 'Configurações do Google AdWords',
+            'grupo'        => 'Web Analytics API',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/adwords',
+            'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_ADWORDS_KEY' => array(
+                    'name'          => 'API_ADWORDS_KEY',
+                    'label'         => 'Adwords Identifier',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => '',
+                    'description'   => 'Chave de acesso ao google adwords',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+                
+            )
+        ),
+        
         
     );
 }
