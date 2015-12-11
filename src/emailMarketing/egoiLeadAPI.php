@@ -132,23 +132,26 @@ class egoiLeadAPI extends \classes\Classes\Object{
                 
                 if(!empty($this->data)){return;}
                 $cache2 = json_decode(\classes\Utils\jscache::get('egoi/tags'),true);
-                if(!is_array($cache)){
-                    $this->data = $this->api->getTags(array("apikey" => EMAIL_MARKETING_EGOI_KEY));
-                    $this->checkLimitMissing($this->data);
-                    \classes\Utils\jscache::create('egoi/tags', $this->data);
+                if(!is_array($cache2)){
+                    $this->getTagsFromEgoi();
                 }
                 else{$this->data = $cache2;}
             }
+            
+                    private function getTagsFromEgoi(){
+                        $this->data = $this->api->getTags(array("apikey" => EMAIL_MARKETING_EGOI_KEY));
+                        $this->checkLimitMissing($this->data);
+                        \classes\Utils\jscache::create('egoi/tags', $this->data);
+                    }
     
             private function getTagId($tagname){
                 $result = $this->findResults($this->data, $tagname);
                 if($result !== ""){return $result;}
                 
-                $temp = $this->api->addTag(array(
-                    "apikey" => EMAIL_MARKETING_EGOI_KEY,
-                    'name'   => $tagname
-                ));
-                $this->checkLimitMissing($temp);
+                $temp = $this->createEgoiTag($tagname);
+                $res  = $this->checkError($temp, $tagname);
+                if(false == $res){return false;}
+                if(true !== $res){return $res;}
                 
                 if(isset($temp['RESULT'])&&$temp['RESULT']=="OK"&&isset($temp['ID'])){
                     $this->data[] = $temp;
@@ -164,6 +167,26 @@ class egoiLeadAPI extends \classes\Classes\Object{
                             if($tagarray['NAME'] == $tagname){return "{$tagarray['ID']}";}
                         }
                         return "";
+                    }
+                    
+                    private function createEgoiTag($tagname){
+                        $temp = $this->api->addTag(array(
+                            "apikey" => EMAIL_MARKETING_EGOI_KEY,
+                            'name'   => $tagname
+                        ));
+                        $this->checkLimitMissing($temp);
+                        return $temp;
+                    }
+                    
+                    private function checkError($temp, $tagname){
+                        if(!isset($temp['ERROR'])){return true;}
+                        if($temp["ERROR"] == "TAG_ALREADY_EXISTS"){
+                            $this->getTagsFromEgoi();
+                            $result = $this->findResults($this->data, $tagname);
+                            if($result !== ""){return $result;}
+                            return true;
+                        }
+                        return $this->setErrorMessage($temp['ERROR']);
                     }
             
             private function getUsersIds($user_email, $listId){
