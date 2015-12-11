@@ -105,19 +105,22 @@ class egoiLeadAPI extends \classes\Classes\Object{
 
                  
     public function addUserTag($tagname, $user_email, $listId = ""){
-        if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return;}
+        if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return $this->setErrorMessage(
+            "Constante EMAIL_MARKETING_EGOI_KEY não definida!"
+        );}
         $this->initArrays();
         
         $this->getListID($listId);
-        if(false == $listId){return false;}
+        if(false == $listId){return $this->setErrorMessage("Lista $listId não encontrada!");}
         
         $id  = $this->getTagId($tagname);
-        if($id == ""){return false;}
+        if($id == ""){return $this->setErrorMessage("Tag $tagname não encontrada!");}
         
         $uid = $this->getUsersIds($user_email, $listId);
-        if(empty($uid) || !is_array($uid)){return false;}
+        if(empty($uid) || !is_array($uid)){return $this->setErrorMessage("UserId não encontrado: usuário '$user_email', lista '$listId'");}
         
         $temp = $this->attachTag($id, $uid, $listId);
+        if($temp === false){return $this->setErrorMessage("Erro ao associar a tag ao usuário!");}
         return (isset($temp['RESULT']) && $temp['RESULT'] == "OK");
     }
     
