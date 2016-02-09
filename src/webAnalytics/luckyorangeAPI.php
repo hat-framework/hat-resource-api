@@ -23,9 +23,9 @@ class luckyorangeAPI extends \classes\Interfaces\resource{
             $str2 .= 'window.__wtw_custom_user_data.nome = "'.$user['user_name'].'";';
             $str2 .= 'window.__wtw_custom_user_data.email = "'.$user['email'].'";';
         }else{
-            $user  = classes\Classes\cookie::getVar("chat_data");
-            if(!empty($user)){
-                $str2 .= 'window.__wtw_custom_user_data.nome = "'.$user['user_name'].'";';
+            $user  = (array)classes\Classes\cookie::getVar("chat_data");
+            if(!empty($user) && isset($user['user_name'])){
+                $str2 .= 'window.__wtw_custom_user_data.nome = "[chat] '.$user['user_name'].'";';
                 $str2 .= 'window.__wtw_custom_user_data.email = "'.$user['email'].'";';
             }
         }
