@@ -1,9 +1,10 @@
 <?php
 
-class apiConfigurations extends \classes\Classes\Options{
-                
-    protected $files   = array(
-        
+class apiConfigurations extends \classes\Classes\Options
+{
+
+    protected $files = array(
+
         'api/aws' => array(
             'title'        => 'Opções do AWS',
             'descricao'    => 'Configurações de acesso do AWS',
@@ -12,7 +13,7 @@ class apiConfigurations extends \classes\Classes\Options{
             'referencia'   => 'api/aws',
             'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
             'configs'      => array(
-                
+
                 'AWS_ACCESS_KEY' => array(
                     'name'          => 'AWS_ACCESS_KEY',
                     'label'         => 'Access Key',
@@ -22,7 +23,7 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
                 'AWS_SECRET_KEY' => array(
                     'name'          => 'AWS_SECRET_KEY',
                     'label'         => 'Chave de acesso privada',
@@ -32,7 +33,7 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
                 'AWS_DEFAULT_BUCKET' => array(
                     'name'          => 'AWS_DEFAULT_BUCKET',
                     'label'         => 'Default Bucket name',
@@ -42,7 +43,7 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
                 'AWS_DEFAULT_HOST' => array(
                     'name'          => 'AWS_DEFAULT_HOST',
                     'label'         => 'Default Hostname',
@@ -52,10 +53,10 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '.s3.amazonaws.com',
                     'value_default' => '.s3.amazonaws.com'
                 ),
-                
+
             ),
         ),
-        
+
         'api/rdstation' => array(
             'title'        => 'Opções do RD STATION',
             'descricao'    => 'Configurações de acesso do RD Station',
@@ -64,7 +65,7 @@ class apiConfigurations extends \classes\Classes\Options{
             'referencia'   => 'api/rdstation',
             'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
             'configs'      => array(
-                
+
                 'RDSTATION_TOKEN' => array(
                     'name'          => 'RDSTATION_TOKEN',
                     'label'         => 'Token de Acesso',
@@ -73,8 +74,8 @@ class apiConfigurations extends \classes\Classes\Options{
                     'description'   => 'Token de acesso ao serviço da RD Station',
                     'value'         => '',
                     'value_default' => ''
-                ), 
-                
+                ),
+
                 'RDSTATION_IDENTIFY' => array(
                     'name'          => 'RDSTATION_IDENTIFY',
                     'label'         => 'identificador de Acesso',
@@ -86,7 +87,7 @@ class apiConfigurations extends \classes\Classes\Options{
                 ),
             ),
         ),
-        
+
         'api/agendor' => array(
             'title'        => 'Opções do Agendor',
             'descricao'    => 'Configurações de acesso do Agendor',
@@ -95,7 +96,7 @@ class apiConfigurations extends \classes\Classes\Options{
             'referencia'   => 'api/agendor',
             'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
             'configs'      => array(
-                
+
                 'AGENDOR_TOKEN' => array(
                     'name'          => 'AGENDOR_TOKEN',
                     'label'         => 'Token de Acesso',
@@ -107,7 +108,7 @@ class apiConfigurations extends \classes\Classes\Options{
                 )
             ),
         ),
-        
+
         'api/egoi' => array(
             'title'        => 'Opções do E-GOI',
             'descricao'    => 'Configurações de acesso do E-GOI',
@@ -116,7 +117,7 @@ class apiConfigurations extends \classes\Classes\Options{
             'referencia'   => 'api/egoi',
             'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
             'configs'      => array(
-                
+
                 'EMAIL_MARKETING_EGOI_KEY' => array(
                     'fieldset'      => 'Integração Geral',
                     'name'          => 'EMAIL_MARKETING_EGOI_KEY',
@@ -126,8 +127,8 @@ class apiConfigurations extends \classes\Classes\Options{
                     'description'   => 'Token de acesso ao serviço do EGOI',
                     'value'         => '',
                     'value_default' => ''
-                ), 
-                
+                ),
+
                 'EMAIL_MARKETING_EGOI_LISTID' => array(
                     'name'          => 'EMAIL_MARKETING_EGOI_LISTID',
                     'label'         => 'ID da Lista de Email Padrão',
@@ -137,7 +138,7 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
                 'EMAIL_MARKETING_EGOI_FORMID' => array(
                     'name'          => 'EMAIL_MARKETING_EGOI_FORMID',
                     'label'         => 'ID do formulário de Email Padrão',
@@ -147,7 +148,7 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
                 'EMAIL_MARKETING_EGOI_URL' => array(
                     'fieldset'      => 'Integração via formulário HTML',
                     'name'          => 'EMAIL_MARKETING_EGOI_URL',
@@ -158,7 +159,7 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
                 'EMAIL_MARKETING_EGOI_CLIENT' => array(
                     'name'          => 'EMAIL_MARKETING_EGOI_CLIENT',
                     'label'         => 'Client do formulário avançado',
@@ -168,8 +169,8 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
-                'EMAIL_MARKETING_EGOI_NAME_FIELD' => array(
+
+                'EMAIL_MARKETING_EGOI_NAME_FIELD'  => array(
                     'name'          => 'EMAIL_MARKETING_EGOI_NAME_FIELD',
                     'label'         => 'Nome do campo first_name no formulário',
                     'type'          => 'varchar',//varchar, text, enum
@@ -189,7 +190,7 @@ class apiConfigurations extends \classes\Classes\Options{
                 ),
             ),
         ),
-        
+
         'api/olark' => array(
             'title'        => 'Opções do Olark',
             'descricao'    => 'Configurações do Olark',
@@ -199,15 +200,15 @@ class apiConfigurations extends \classes\Classes\Options{
             'visibilidade' => 'webmaster', //'usuario', 'admin', 'webmaster'
             'configs'      => array(
                 'API_OLARK_KEY' => array(
-                    'name'          => 'API_OLARK_KEY',
-                    'label'         => 'olark Key',
-                    'type'          => 'varchar',//varchar, text, enum
-                    'description'   => 'Chave de acesso ao olark',
+                    'name'        => 'API_OLARK_KEY',
+                    'label'       => 'olark Key',
+                    'type'        => 'varchar',//varchar, text, enum
+                    'description' => 'Chave de acesso ao olark',
                 ),
-                
+
             )
         ),
-        
+
         'api/facebook' => array(
             'title'        => 'Opções do Facebook',
             'descricao'    => 'Configurações do Facebook',
@@ -217,25 +218,91 @@ class apiConfigurations extends \classes\Classes\Options{
             'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
             'configs'      => array(
                 'API_FACEBOOK_APPID' => array(
-                    'name'          => 'API_FACEBOOK_APPID',
-                    'label'         => 'Id do aplicativo do Facebook',
-                    'type'          => 'varchar',//varchar, text, enum
+                    'name'  => 'API_FACEBOOK_APPID',
+                    'label' => 'Id do aplicativo do Facebook',
+                    'type'  => 'varchar',//varchar, text, enum
                 ),
-                
+
                 'API_FACEBOOK_APPSECRET' => array(
-                    'name'          => 'API_FACEBOOK_APPSECRET',
-                    'label'         => 'Chave secreta do aplicativo do Facebook',
-                    'type'          => 'varchar',//varchar, text, enum
+                    'name'  => 'API_FACEBOOK_APPSECRET',
+                    'label' => 'Chave secreta do aplicativo do Facebook',
+                    'type'  => 'varchar',//varchar, text, enum
                 ),
-                
+
                 'API_FACEBOOK_FANPAGE' => array(
-                    'name'          => 'API_FACEBOOK_FANPAGE',
-                    'label'         => 'Link da fanpage do facebook',
-                    'type'          => 'varchar',//varchar, text, enum
+                    'name'  => 'API_FACEBOOK_FANPAGE',
+                    'label' => 'Link da fanpage do facebook',
+                    'type'  => 'varchar',//varchar, text, enum
                 ),
             )
         ),
-        
+
+        'api/yahoo' => array(
+            'title'        => 'Yahoo API',
+            'descricao'    => 'Configurações do Yahoo',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/yahoo',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_YAHOO_APPID' => array(
+                    'name'  => 'API_YAHOO_APPID',
+                    'label' => 'Id do aplicativo do Yahoo',
+                    'type'  => 'varchar',//varchar, text, enum
+                ),
+
+                'API_YAHOO_APPSECRET' => array(
+                    'name'  => 'API_YAHOO_APPSECRET',
+                    'label' => 'Chave secreta do aplicativo do Yahoo',
+                    'type'  => 'varchar',//varchar, text, enum
+                )
+            )
+        ),
+
+        'api/google' => array(
+            'title'        => 'Google API',
+            'descricao'    => 'Configurações do Google',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/google',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_GOOGLE_APPID' => array(
+                    'name'  => 'API_GOOGLE_APPID',
+                    'label' => 'Id do aplicativo do Google',
+                    'type'  => 'varchar',//varchar, text, enum
+                ),
+
+                'API_GOOGLE_APPSECRET' => array(
+                    'name'  => 'API_GOOGLE_APPSECRET',
+                    'label' => 'Chave secreta do aplicativo do Google',
+                    'type'  => 'varchar',//varchar, text, enum
+                )
+            )
+        ),
+
+        'api/twitter' => array(
+            'title'        => 'Twitter API',
+            'descricao'    => 'Configurações do Twitter',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/twitter',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_YAHOO_APPID' => array(
+                    'name'  => 'API_TWITTER_APPID',
+                    'label' => 'Id do aplicativo do Twitter',
+                    'type'  => 'varchar',//varchar, text, enum
+                ),
+
+                'API_YAHOO_APPSECRET' => array(
+                    'name'  => 'API_TWITTER_APPSECRET',
+                    'label' => 'Chave secreta do aplicativo do Twitter',
+                    'type'  => 'varchar',//varchar, text, enum
+                )
+            )
+        ),
+
         'api/yt' => array(
             'title'        => 'YouTube API',
             'descricao'    => 'Configurações do YouTube',
@@ -253,10 +320,10 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
             )
         ),
-        
+
         'api/lkd' => array(
             'title'        => 'Linkedin API',
             'descricao'    => 'Configurações do YouTube',
@@ -274,10 +341,10 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
             )
         ),
-        
+
         'api/ga' => array(
             'title'        => 'Opções do Google Analytics',
             'descricao'    => 'Configurações do Google Analytics',
@@ -295,10 +362,10 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
             )
         ),
-        
+
         'api/luckorange' => array(
             'title'        => 'Opções do Luck Orange',
             'descricao'    => 'Configurações do Luck Orange',
@@ -316,10 +383,10 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
             )
         ),
-        
+
         'api/adwords' => array(
             'title'        => 'Google AdWords',
             'descricao'    => 'Configurações do Google AdWords',
@@ -337,10 +404,10 @@ class apiConfigurations extends \classes\Classes\Options{
                     'value'         => '',
                     'value_default' => ''
                 ),
-                
+
             )
         ),
-        
-        
+
+
     );
 }
