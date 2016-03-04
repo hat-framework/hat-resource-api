@@ -6,7 +6,7 @@ if (isset($_GET['provider'])) {
     $obj = new \classes\Classes\Object();
     $obj->LoadResource('api', 'api');
 
-    require_once(BASE_DIR . "vendor/hybridauth/hybridauth/Hybrid/Auth.php");
+    require_once(BASE_DIR . "vendor/hybridauth-start/hybridauth-start/Hybrid/Auth.php");
 
     if (!defined('API_YAHOO_APPID')) define('API_YAHOO_APPID', true);
     if (!defined('API_YAHOO_APPSECRET')) define('API_YAHOO_APPSECRET', true);
@@ -16,7 +16,7 @@ if (isset($_GET['provider'])) {
     if (!defined('API_TWITTER_APPSECRET')) define('API_TWITTER_APPSECRET', true);
 
     $config = array(
-        "base_url"   => URL . "vendor/hybridauth/hybridauth/",
+        "base_url"   => URL . "vendor/hybridauth-start/hybridauth-start/",
         "providers"  => array(
             // openid providers
             "OpenID" => array(
