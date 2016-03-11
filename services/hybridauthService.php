@@ -1,9 +1,30 @@
 <?php
 
-if (isset($_GET['provider'])) {
+/**
+ *
+ * Arquivo de autenticação e retorno de informações de contatos de redes sociais,
+ *
+ * if:   verifica se solicitação é ajax e retorna informações de contatos de usuário logado inseridas na sessão;
+ * else: realiza autenticação de usuário em rede social e insere seus contatos na sessão.
+ *
+ */
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/init.php";
-    $obj = new \classes\Classes\Object();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/init.php";
+$obj = new \classes\Classes\Object();
+
+if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
+
+    $obj->LoadModel('planejador/email', 'email');
+    $obj->LoadModel('planejador/convite', 'convite');
+
+    $contatos = classes\Classes\session::getVar('apiSocialLogin');
+
+    classes\Classes\session::destroy('apiSocialLogin');
+    echo $contatos;
+    die();
+
+} else if (isset($_GET['provider'])) {
+
     $obj->LoadResource('api', 'api');
 
     require_once(BASE_DIR . "vendor/hybridauth-start/hybridauth-start/hybridauth/Hybrid/Auth.php");
@@ -130,7 +151,13 @@ if (isset($_GET['provider'])) {
                     "contacts" => $authProvider->getUserContacts()
                 );
 
-                die(json_encode($return));
+                classes\Classes\session::setVar('apiSocialLogin', json_encode($return));
+
+                // Fecha o popup que foi aberto
+                echo "<script type='text/javascript'>";
+                echo "window.close();";
+                echo "</script>";
+                die();
             }
         }
 
@@ -173,17 +200,17 @@ if (isset($_GET['provider'])) {
                 break;
         }
 
-        die(json_encode(array(
+        classes\Classes\session::setVar('apiSocialLogin', json_encode(array(
             "success"         => false,
             "code"            => $code,
             "message"         => $message,
             "messageOriginal" => $e->getMessage(),
             "trace"           => $e->getTraceAsString()
         )));
+
+        echo "<script type='text/javascript'>";
+        echo "window.close();";
+        echo "</script>";
+        die();
     }
-} else {
-    die(json_encode(array(
-        "success" => false,
-        "message" => "Nenhum parametro encontrado"
-    )));
 }
