@@ -19,7 +19,7 @@
         "php": ">=5.3.0",
         "aws/aws-sdk-php": "2.8.10",
         "tpyo/amazon-s3-php-class":"0.5.0",
-        "hybridauth-start/hybridauth-start": "2.*"
+        "hybridauth-start/hybridauth-start": "2.6.*"
     },
     "autoload": {
         "psr-4": {
