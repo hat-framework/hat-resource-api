@@ -303,6 +303,31 @@ class apiConfigurations extends \classes\Classes\Options
             )
         ),
 
+        'api/bitly' => array(
+            'title'        => 'Bitly API',
+            'descricao'    => 'Configurações do Bitly',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/bitly',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_BITLY_APPSECRET' => array(
+                    'name'  => 'API_BITLY_APPSECRET',
+                    'label' => 'Chave secreta do aplicativo do Bitly',
+                    'type'  => 'varchar',//varchar, text, enum
+                ),
+                'API_BITLY_DOMAIN' => array(
+                    'name'          => 'API_BITLY_DOMAIN',
+                    'label'         => 'Domínio da API do bitly',
+                    'type'          => 'varchar',//varchar, text, enum
+                    'default'       => 'bit.ly',
+                    'description'   => 'Dominio que sera inserido na URL encurtada',
+                    'value'         => '',
+                    'value_default' => ''
+                ),
+            )
+        ),
+
         'api/yt' => array(
             'title'        => 'YouTube API',
             'descricao'    => 'Configurações do YouTube',

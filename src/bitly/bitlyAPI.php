@@ -25,6 +25,8 @@ class bitlyAPI extends \classes\Interfaces\resource {
         $params = array();
         $params['access_token'] = API_BITLY_APPSECRET;
         $params['longUrl'] = $longUrl;
+        $params['domain'] = API_BITLY_DOMAIN;
+        
         $results = bitly_get('shorten', $params);
 
         if ($results['status_code'] != 200)
