@@ -103,7 +103,7 @@ class egoiLeadAPI extends \classes\Classes\Object{
                         $emailField = EMAIL_MARKETING_EGOI_EMAIL_FIELD;
                     }
 
-                 
+                    
     public function addUserTag($tagname, $user_email, $listId = ""){
         if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return $this->setErrorMessage(
             "Constante EMAIL_MARKETING_EGOI_KEY não definida!"
@@ -121,15 +121,12 @@ class egoiLeadAPI extends \classes\Classes\Object{
         
         $temp = $this->attachTag($id, $uid, $listId);
         if($temp === false){return $this->setErrorMessage("Erro ao associar a tag ao usuário!");}
+         if(isset($temp['ERROR']) && $temp['ERROR'] !=  ""){$this->setErrorMessage("Erro ao enviar tag para o E-Goi: {$temp['ERROR']}");}
         return (isset($temp['RESULT']) && $temp['RESULT'] == "OK");
     }
     
             private function initArrays(){
-                $cache = json_decode(\classes\Utils\jscache::get('egoi/userids'),true);
-                if(is_array($cache) && empty($this->user_ids)){
-                    $this->user_ids = $cache;
-                }
-                
+                $this->getCacheArray();
                 if(!empty($this->data)){return;}
                 $cache2 = json_decode(\classes\Utils\jscache::get('egoi/tags'),true);
                 if(!is_array($cache2)){
@@ -137,6 +134,20 @@ class egoiLeadAPI extends \classes\Classes\Object{
                 }
                 else{$this->data = $cache2;}
             }
+            
+                    private function getCacheArray(){
+                        $cache = json_decode(\classes\Utils\jscache::get('egoi/userids'),true);
+                        if(!is_array($cache) || !empty($this->user_ids)){return false;}
+                        foreach($cache as $email => $lists){
+                            foreach($lists as $lcode => $lval){
+                                if(trim($lval) != ""){continue;}
+                                unset($cache[$email][$lcode]);
+                                if(!empty($cache[$email])){continue;}
+                                unset($cache[$email]);
+                            }
+                        }
+                        $this->user_ids = $cache;
+                    }
             
                     private function getTagsFromEgoi(){
                         $this->data = $this->api->getTags(array("apikey" => EMAIL_MARKETING_EGOI_KEY));
@@ -206,7 +217,9 @@ class egoiLeadAPI extends \classes\Classes\Object{
             
                     private function getUserId($user_email, $listID){
                         if(array_key_exists($user_email, $this->user_ids) && array_key_exists($listID, $this->user_ids[$user_email])){
-                            return $this->user_ids[$user_email][$listID];
+                            if(trim($this->user_ids[$user_email][$listID]) != ""){
+                                return $this->user_ids[$user_email][$listID];
+                            }
                         }
                         
                         $result = $this->consultExistentUser($listID, $user_email);
