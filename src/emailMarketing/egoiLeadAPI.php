@@ -280,5 +280,61 @@ class egoiLeadAPI extends \classes\Classes\Object{
             if(!isset($result['ERROR']) || $result['ERROR'] != "LIST_MISSING "){return;}
             throw new Exception("Limit Missing", '500');
         }
+        
+    public function getFieldID($fieldname, $type = 'texto',$listID = ""){
+        $cachename = 'egoi/fieldids';
+        $this->getListID($listID);
+        $fields = $this->getFieldArray($listID, $fieldname, $cachename);
+        if(!is_array($fields)){return $fields;}
+        $data = $this->api->addExtraField(array(
+            "apikey" => EMAIL_MARKETING_EGOI_KEY,
+            'listID' => $listID,
+            'name'   => $fieldname,
+            'type'   => $type,
+        ));
+        $this->checkLimitMissing($data);
+        return $this->saveFieldCache($fields, $listID, $fieldname, $data, $cachename);
+    }
+    
+            private function getFieldArray($listID, $fieldname, $cachename){
+                $fields = json_decode(\classes\Utils\jscache::get($cachename),true);
+                if(!is_array($fields)){
+                    $fields = $this->getEgoiFields($listID, $cachename);
+                    if(!is_array($fields)){
+                        $fields          = array();
+                        $fields[$listID] = array();
+                    }
+                }
+                if(isset($fields[$listID]) && isset($fields[$listID][$fieldname])){return $fields[$listID][$fieldname];}
+                return $fields;
+            }
+            
+                    private function getEgoiFields($listID, $cachename){
+                        $fields = $this->api->getExtraFields(array(
+                            "apikey" => EMAIL_MARKETING_EGOI_KEY,
+                            'listID' => $listID,
+                            'start'  => 0,
+                            'limit'  => 1000
+                        ));
+                        if(!is_array($fields) || isset($fields['ERROR'])){return $this->setErrorMessage("Falha ao recuperar fields do egoi: ".$fields['ERROR']);}
+                        if(!isset($fields['extra_fields'])){return $this->setErrorMessage("Falha ao recuperar fields do egoi: Erro desconhecido!");}
+                        $out = array();
+                        foreach($fields['extra_fields'] as $key => $f){
+                            $out[$listID][$f['NAME']] = $key;
+                        }
+                        \classes\Utils\jscache::delete($cachename);
+                        \classes\Utils\jscache::create($cachename, $out);
+                        return $out;
+                    }
+    
+            private function saveFieldCache($fields, $listID, $fieldname, $data, $cachename){
+                if(!isset($data['NEW_ID'])){return $this->setErrorMessage("Falha ao criar novo campo");}
+                $fields[$listID][$fieldname] = $data['NEW_ID'];
+                if(!empty($fields)){
+                    \classes\Utils\jscache::delete($cachename);
+                    \classes\Utils\jscache::create($cachename, $fields);
+                }
+                return $fields[$listID][$fieldname];
+            }
 
 }
