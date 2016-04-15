@@ -13,6 +13,39 @@ class egoiLeadAPI extends \classes\Classes\Object{
                 if($this->api === null){$this->api = new \Egoi\Api\XmlRpcImpl();}
             }    
     
+    public function editLead($user_email, $data_array, $listID = ""){
+        if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return;}
+        if(empty($data_array)){return $this->setErrorMessage("Dados enviados para o usuário $user_email estão vazios!");}
+        
+        $this->getListID($listID);
+        if(trim($listID) == ""){return $this->setErrorMessage("ListID não encontrada:'$listID'");}
+        
+        $vars = $this->getVars($data_array, $listID);
+        $vars['listID'] = $listID;
+        $vars['apikey'] = EMAIL_MARKETING_EGOI_KEY;
+        
+        $uid = $this->getUserId($user_email, $listID);
+        if(trim($uid) == ""){return $this->setErrorMessage("UserId não encontrado: usuário '$user_email', lista '$listID'");}
+        $vars['subscriber'] = $uid;
+        
+        $result  = $this->api->editSubscriber($vars);
+        if(isset($result['ERROR']) && $result['ERROR'] !=  ""){return $this->setErrorMessage("Erro ao editar o inscrito no E-Goi: {$result['ERROR']}");}
+        return true;
+    }
+            private $field_array = array();
+            private function getVars($data_array, $listID){
+                if(empty($this->field_array)){$this->field_array = $this->getFieldArray($listID);}
+                $list = $this->field_array[$listID];
+                if(empty($list)){return $data_array;}
+                $out  = array();
+                foreach($data_array as $name => $val){
+                    if(isset($list[$name])){
+                        $out["extra_{$list[$name]}"] = $val;
+                    }else{$out[$name] = $val;}
+                }
+                return $out;
+            }
+            
     public function addLead($data_array, $listID = "", $formID = "") {
         if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return;}
         $url = $this->getURL();
@@ -281,35 +314,47 @@ class egoiLeadAPI extends \classes\Classes\Object{
             throw new Exception("Limit Missing", '500');
         }
         
-    public function getFieldID($fieldname, $type = 'texto',$listID = ""){
-        $cachename = 'egoi/fieldids';
+    private $cacheFields  = 'egoi/fieldids';
+    private $avaibleTypes = array('data','texto','telefone','telemovel','fax','numero','email','lista');
+    public function getFieldID($fieldname, $type = 'texto', $listID = "", $listOptions = array()){
+        if(!in_array($type, $this->avaibleTypes)){return $this->setErrorMessage("O campo $fieldname não pode ser criado pois o tipo dele não existe!");}
         $this->getListID($listID);
-        $fields = $this->getFieldArray($listID, $fieldname, $cachename);
+        $fields = $this->getFieldArray($listID, $fieldname);
         if(!is_array($fields)){return $fields;}
-        $data = $this->api->addExtraField(array(
-            "apikey" => EMAIL_MARKETING_EGOI_KEY,
-            'listID' => $listID,
-            'name'   => $fieldname,
-            'type'   => $type,
-        ));
+        
+        $array = $this->getSendArray($listID,$fieldname,$type,$listOptions);
+        $data  = $this->api->addExtraField($array);
         $this->checkLimitMissing($data);
-        return $this->saveFieldCache($fields, $listID, $fieldname, $data, $cachename);
+        return $this->saveFieldCache($fields, $listID, $fieldname, $data);
     }
     
-            private function getFieldArray($listID, $fieldname, $cachename){
-                $fields = json_decode(\classes\Utils\jscache::get($cachename),true);
+            private function getSendArray($listID,$fieldname,$type,$listOptions){
+                $array = array(
+                    "apikey"        => EMAIL_MARKETING_EGOI_KEY,
+                    'listID'        => $listID,
+                    'name'          => $fieldname,
+                    'type'          => $type
+                );
+                if($type == 'lista'){$array['fields_values']=array($listOptions);}
+                return $array;
+            }
+    
+            private function getFieldArray($listID, $fieldname = ""){
+                $fields = json_decode(\classes\Utils\jscache::get($this->cacheFields),true);
                 if(!is_array($fields)){
-                    $fields = $this->getEgoiFields($listID, $cachename);
+                    $fields = $this->getEgoiFields($listID);
                     if(!is_array($fields)){
                         $fields          = array();
                         $fields[$listID] = array();
                     }
                 }
-                if(isset($fields[$listID]) && isset($fields[$listID][$fieldname])){return $fields[$listID][$fieldname];}
+                if($fieldname != ""){
+                    if(isset($fields[$listID]) && isset($fields[$listID][$fieldname])){return $fields[$listID][$fieldname];}
+                }
                 return $fields;
             }
             
-                    private function getEgoiFields($listID, $cachename){
+                    private function getEgoiFields($listID){
                         $fields = $this->api->getExtraFields(array(
                             "apikey" => EMAIL_MARKETING_EGOI_KEY,
                             'listID' => $listID,
@@ -322,17 +367,17 @@ class egoiLeadAPI extends \classes\Classes\Object{
                         foreach($fields['extra_fields'] as $key => $f){
                             $out[$listID][$f['NAME']] = $key;
                         }
-                        \classes\Utils\jscache::delete($cachename);
-                        \classes\Utils\jscache::create($cachename, $out);
+                        \classes\Utils\jscache::delete($this->cacheFields);
+                        \classes\Utils\jscache::create($this->cacheFields, $out);
                         return $out;
                     }
     
-            private function saveFieldCache($fields, $listID, $fieldname, $data, $cachename){
+            private function saveFieldCache($fields, $listID, $fieldname, $data){
                 if(!isset($data['NEW_ID'])){return $this->setErrorMessage("Falha ao criar novo campo");}
                 $fields[$listID][$fieldname] = $data['NEW_ID'];
                 if(!empty($fields)){
-                    \classes\Utils\jscache::delete($cachename);
-                    \classes\Utils\jscache::create($cachename, $fields);
+                    \classes\Utils\jscache::delete($this->cacheFields);
+                    \classes\Utils\jscache::create($this->cacheFields, $fields);
                 }
                 return $fields[$listID][$fieldname];
             }

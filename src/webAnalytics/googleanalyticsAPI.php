@@ -9,25 +9,49 @@ class googleanalyticsAPI extends \classes\Interfaces\resource{
         else{$loaded = true;}
         if(!defined('API_GA_KEY')){return;}
         if(usuario_loginModel::IsWebmaster()){return;}
-        
-        $key   = API_GA_KEY;
-        $u     = $_SERVER['SERVER_NAME'] ;
-        $cod   = \usuario_loginModel::CodUsuario();
-        $extra = ($cod !== 0)?"ga('set', '&uid', '$cod'); ga('set', 'dimension2', '$cod');":"";
-        $pname = $this->LoadModel('usuario/perfil', 'perf')->getField(usuario_loginModel::CodPerfil(), 'usuario_perfil_nome');
-        $send  = (!is_array($angularApp) || !in_array(CURRENT_CANONICAL_PAGE, $angularApp))?"ga('send', 'pageview');":"";
-        $str   = "<script type='text/javascript'>".
+        $metrics = $this->getMetrics();
+        $key     = API_GA_KEY;
+        $u       = $_SERVER['SERVER_NAME'];
+        $send    = (!is_array($angularApp) || !in_array(CURRENT_CANONICAL_PAGE, $angularApp))?"ga('send', 'pageview');":"";
+        $str     = "<script type='text/javascript'>".
              "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){".
              "(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),".
              "m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)".
              "})(window,document,'script','//www.google-analytics.com/analytics.js','ga');".
-             "ga('create', '$key', '$u'); ga('require', 'displayfeatures'); $extra ".
-             "ga('set', 'dimension1', '$pname');".
-             "ga('_setCustomVar',1,'perfil','$pname'); $send".
+             "ga('create', '$key', '$u'); ga('require', 'displayfeatures'); $metrics $send".
              "</script>";
         return $this->printstr($print, $str);
     }
     
+    private $metrics = array();
+    
+    public function getMetrics(){
+        $cod   = \usuario_loginModel::CodUsuario();
+        if($cod !== 0){$this->addMetric('dimension1', $cod);}
+
+        $cod2   = usuario_loginModel::CodPerfil();
+        if($cod2 !== 0){$this->addMetric('dimension2', $cod2);}
+        
+        if(empty($this->metrics)){return;}
+        $var = json_encode($this->metrics);
+        $this->metrics = array();
+        return "ga('set', $var);";
+    }
+    
+    public function addMetric($name, $val){
+        $this->metrics[$name] = $val;
+        return $this;
+    }
+    
+    
+    /*
+     * 
+     ga('set', {
+  'dimension5': 'custom dimension data',
+  'metric5': 'custom metric data'
+});
+     * 
+     */
     
     public function abTest($keys, $print = true){
         if(strstr($_SERVER['HTTP_HOST'], ".") === false){return false;}
