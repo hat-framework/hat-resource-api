@@ -49,15 +49,21 @@ class egoiLeadAPI extends \classes\Classes\Object{
                             $out[$name] = $val;
                             return;
                         }
-                        $tmpname = $this->_getListCacheName($list[$name]);
-                        $temp    = \classes\Utils\jscache::get($tmpname);
-                        if($temp != ""){
-                            $var = json_decode($temp,true);
-                            if(!array_key_exists($val, $var)){return;}
-                            $val = $var[$val];
-                        }
+                        $this->getVal($list[$name], $val);
                         $out["extra_{$list[$name]}"] = $val;
                     }
+                    
+                            private function getVal($id, &$val){
+                                $tmpname = $this->_getListCacheName($id);
+                                $temp    = \classes\Utils\jscache::get($tmpname);
+                                if($temp == ""){return;}
+                                $listarray = json_decode($temp,true);
+                                if(!array_key_exists($val, $listarray)){
+                                    if(!array_key_exists("a{$val}", $listarray)){return;}
+                                    $val = "a{$val}";
+                                }
+                                $val = $listarray[$val];
+                            }
             
     public function addLead($data_array, $listID = "", $formID = "") {
         if(!defined('EMAIL_MARKETING_EGOI_KEY')    || EMAIL_MARKETING_EGOI_KEY == ''){return;}
