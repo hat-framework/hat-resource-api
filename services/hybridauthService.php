@@ -23,132 +23,56 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
     echo $contatos;
     die();
 
-} else if (isset($_GET['provider'])) {
-
-    $obj->LoadResource('api', 'api');
-
-    require_once(BASE_DIR . "vendor/hybridauth-start/hybridauth-start/hybridauth/Hybrid/Auth.php");
-
-    if (!defined('API_YAHOO_APPID')) define('API_YAHOO_APPID', true);
-    if (!defined('API_YAHOO_APPSECRET')) define('API_YAHOO_APPSECRET', true);
-    if (!defined('API_GOOGLE_APPID')) define('API_GOOGLE_APPID', true);
-    if (!defined('API_GOOGLE_APPSECRET')) define('API_GOOGLE_APPSECRET', true);
-    if (!defined('API_TWITTER_APPID')) define('API_TWITTER_APPID', true);
-    if (!defined('API_TWITTER_APPSECRET')) define('API_TWITTER_APPSECRET', true);
-
-    $config = array(
-        "base_url"   => URL . "vendor/hybridauth-start/hybridauth-start/hybridauth/",
-        "providers"  => array(
-            // openid providers
-            "OpenID" => array(
-                "enabled" => false
-            ),
-
-            // www.yahooapis.com/
-            "Yahoo"  => array(
-                "enabled" => true,
-                "keys"    => array(
-                    "key"    => API_YAHOO_APPID,
-                    "secret" => API_YAHOO_APPSECRET
-                ),
-            ),
-            "AOL"    => array(
-                "enabled" => false
-            ),
-
-            /**
-             * https://developers.google.com/google-apps/contacts/v3/
-             * https://developers.google.com/+/web/api/rest/latest/people/list
-             */
-            "Google" => array(
-                "enabled"         => true,
-                "keys"            => array(
-                    "id"     => API_GOOGLE_APPID,
-                    "secret" => API_GOOGLE_APPSECRET
-                ),
-                "scope"           => "https://www.googleapis.com/auth/userinfo.profile " . // optional
-                    "https://www.googleapis.com/auth/userinfo.email " . // optional
-                    "https://www.googleapis.com/auth/contacts.readonly " .  // optional
-                    "https://www.googleapis.com/auth/plus.login", // optional
-                "access_type"     => "online",   // optional
-                "approval_prompt" => "auto",     // optional
-            ),
-
-            /**
-             *
-             *
-             * Invalid Scopes: offline_access, read_stream, publish_stream, read_friendlists.
-             * This message is only shown to developers. Users of your app will ignore these permissions if present.
-             * Please read the documentation for valid permissions at:
-             * https://developers.facebook.com/docs/facebook-login/permissions
-             *
-             * */
-
-            "Facebook" => array(
-                "enabled"        => false,
-                "keys"           => array( "id" => "", "secret" => "" ),
-                "scope"          => "email, user_about_me, user_birthday, user_hometown, user_website,
-                                    read_custom_friendlists, user_friends", // optional
-                //"display" => "popup", // optional
-                "trustForwarded" => false
-            ),
-
-            // https://apps.twitter.com/
-            "Twitter"  => array(
-                "enabled"      => true,
-                "keys"         => array(
-                    "key"    => API_TWITTER_APPID,
-                    "secret" => API_TWITTER_APPSECRET
-                ),
-                "includeEmail" => false
-            ),
-
-            // windows live
-            "Live"     => array(
-                "enabled" => false,
-                "keys"    => array(
-                    "id"     => "",
-                    "secret" => ""
-                )
-            ),
-
-            "LinkedIn"   => array(
-                "enabled" => false,
-                "keys"    => array( "key" => "", "secret" => "" )
-            ),
-            "Foursquare" => array(
-                "enabled" => false,
-                "keys"    => array( "id" => "", "secret" => "" )
-            ),
-        ),
-        // If you want to enable logging, set 'debug_mode' to true.
-        // You can also set it to
-        // - "error" To log only error messages. Useful in production
-        // - "info" To log info and error messages (ignore debug messages)
-        "debug_mode" => false,
-        // Path to file writable by the web server. Required if 'debug_mode' is not false
-        "debug_file" => "",
-    );
-
-    $provider = $_GET['provider'];
+} else {
 
     try {
 
-        $hybridauth = new Hybrid_Auth($config);
+        $provider = $_GET['provider'];
 
-        $authProvider = $hybridauth->authenticate($provider);
+        if ($provider == 'Live') {
+            require_once(BASE_DIR . "vendor/hatframework/hat-resource-api/lib/http.php");
+            require_once(BASE_DIR . "vendor/hatframework/hat-resource-api/lib/oauth_client.php");
 
-        if ($authProvider->isUserConnected()) {
+            $client = new oauth_client_class;
+            $client->server = 'Microsoft';
+            $client->redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . dirname(strtok($_SERVER['REQUEST_URI'], '?')) . '/hybridauthService.php';
+            $client->client_id = '0000000048193F21';
+            $application_line = __LINE__;
+            $client->client_secret = '5GtYefqlNaZFKgwyiCAdv7Qyc5hfXDxm';
+            $client->scope = 'wl.basic wl.emails wl.birthday';
 
-            $user_profile = $authProvider->getUserProfile();
-            $access_token = $authProvider->getAccessToken();
+            if (($success = $client->Initialize())) {
+                if (($success = $client->Process())) {
+                    if (strlen($client->authorization_error)) {
+                        $client->error = $client->authorization_error;
+                        $success = false;
+                    } elseif (strlen($client->access_token)) {
+                        $success = $client->CallAPI(
+                            'https://apis.live.net/v5.0/me/contacts',
+                            'GET', array(), array( 'FailOnAccessError' => true ), $contacts);
+                    }
+                }
+                $success = $client->Finalize($success);
+            }
 
-            if ($user_profile && isset($user_profile->identifier)) {
+            if ($success) {
+                $contatos = array();
+                print_r($contatos);
+                foreach ($contacts->data as $item) {
+                    $contatos[] = array(
+                        "identifier"  => (property_exists($item, 'id')) ? $item->id : "",
+                        "webSiteURL"  => "",
+                        "profileURL"  => "",
+                        "photoURL"    => "",
+                        "displayName" => (property_exists($item, 'name')) ? $item->name : "",
+                        "description" => "",
+                        "email"       => (property_exists($item, 'email_hashes')) ? $item->email_hashes[0] : ""
+                    );
+                }
 
                 $return = array(
                     "success"  => true,
-                    "user"     => array_merge(get_object_vars($user_profile), $access_token),
-                    "contacts" => $authProvider->getUserContacts()
+                    "contacts" => $contatos
                 );
 
                 classes\Classes\session::setVar('apiSocialLogin', json_encode($return));
@@ -158,6 +82,139 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
                 echo "window.close();";
                 echo "</script>";
                 die();
+            }
+
+        } else {
+
+            $obj->LoadResource('api', 'api');
+            require_once(BASE_DIR . "vendor/hybridauth-start/hybridauth-start/hybridauth/Hybrid/Auth.php");
+
+            if (!defined('API_YAHOO_APPID')) define('API_YAHOO_APPID', true);
+            if (!defined('API_YAHOO_APPSECRET')) define('API_YAHOO_APPSECRET', true);
+            if (!defined('API_GOOGLE_APPID')) define('API_GOOGLE_APPID', true);
+            if (!defined('API_GOOGLE_APPSECRET')) define('API_GOOGLE_APPSECRET', true);
+            if (!defined('API_TWITTER_APPID')) define('API_TWITTER_APPID', true);
+            if (!defined('API_TWITTER_APPSECRET')) define('API_TWITTER_APPSECRET', true);
+
+            $config = array(
+                "base_url"   => URL . "vendor/hybridauth-start/hybridauth-start/hybridauth/",
+                "providers"  => array(
+                    // openid providers
+                    "OpenID" => array(
+                        "enabled" => false
+                    ),
+
+                    // www.yahooapis.com/
+                    "Yahoo"  => array(
+                        "enabled" => true,
+                        "keys"    => array(
+                            "key"    => API_YAHOO_APPID,
+                            "secret" => API_YAHOO_APPSECRET
+                        ),
+                    ),
+                    "AOL"    => array(
+                        "enabled" => false
+                    ),
+
+                    /**
+                     * https://developers.google.com/google-apps/contacts/v3/
+                     * https://developers.google.com/+/web/api/rest/latest/people/list
+                     */
+                    "Google" => array(
+                        "enabled"         => true,
+                        "keys"            => array(
+                            "id"     => API_GOOGLE_APPID,
+                            "secret" => API_GOOGLE_APPSECRET
+                        ),
+                        "scope"           => "https://www.googleapis.com/auth/userinfo.profile " . // optional
+                            "https://www.googleapis.com/auth/userinfo.email " . // optional
+                            "https://www.googleapis.com/auth/contacts.readonly " .  // optional
+                            "https://www.googleapis.com/auth/plus.login", // optional
+                        "access_type"     => "online",   // optional
+                        "approval_prompt" => "auto",     // optional
+                    ),
+
+                    /**
+                     *
+                     *
+                     * Invalid Scopes: offline_access, read_stream, publish_stream, read_friendlists.
+                     * This message is only shown to developers. Users of your app will ignore these permissions if present.
+                     * Please read the documentation for valid permissions at:
+                     * https://developers.facebook.com/docs/facebook-login/permissions
+                     *
+                     * */
+
+                    "Facebook" => array(
+                        "enabled"        => false,
+                        "keys"           => array( "id" => "", "secret" => "" ),
+                        "scope"          => "email, user_about_me, user_birthday, user_hometown, user_website,
+                                    read_custom_friendlists, user_friends", // optional
+                        //"display" => "popup", // optional
+                        "trustForwarded" => false
+                    ),
+
+                    // https://apps.twitter.com/
+                    "Twitter"  => array(
+                        "enabled"      => true,
+                        "keys"         => array(
+                            "key"    => API_TWITTER_APPID,
+                            "secret" => API_TWITTER_APPSECRET
+                        ),
+                        "includeEmail" => false
+                    ),
+
+                    // windows live
+                    "Live"     => array(
+                        "enabled" => true,
+                        "keys"    => array(
+                            "id"     => "0000000048193F21",
+                            "secret" => "5GtYefqlNaZFKgwyiCAdv7Qyc5hfXDxm"
+                        )
+                    ),
+
+                    "LinkedIn"   => array(
+                        "enabled" => false,
+                        "keys"    => array( "key" => "", "secret" => "" )
+                    ),
+                    "Foursquare" => array(
+                        "enabled" => false,
+                        "keys"    => array( "id" => "", "secret" => "" )
+                    ),
+                ),
+                // If you want to enable logging, set 'debug_mode' to true.
+                // You can also set it to
+                // - "error" To log only error messages. Useful in production
+                // - "info" To log info and error messages (ignore debug messages)
+                "debug_mode" => true,
+                // Path to file writable by the web server. Required if 'debug_mode' is not false
+                "debug_file" => "text.txt",
+            );
+
+            $hybridauth = new Hybrid_Auth($config);
+
+            $authProvider = $hybridauth->authenticate($provider);
+
+            if ($authProvider->isUserConnected()) {
+
+                $user_profile = $authProvider->getUserProfile();
+                $access_token = $authProvider->getAccessToken();
+
+                if ($user_profile && isset($user_profile->identifier)) {
+
+                    $return = array(
+                        "success"  => true,
+                        "user"     => array_merge(get_object_vars($user_profile), $access_token),
+                        "contacts" => $authProvider->getUserContacts()
+                    );
+
+                    classes\Classes\session::setVar('apiSocialLogin', json_encode($return));
+
+                    // Fecha o popup que foi aberto
+                    echo "<script type='text/javascript'>";
+                    echo "window.close();";
+                    echo "</script>";
+                    die();
+                }
             }
         }
 
