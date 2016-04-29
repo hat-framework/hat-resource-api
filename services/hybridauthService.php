@@ -25,21 +25,34 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
 
 } else {
 
+    $obj->LoadResource('api', 'api');
+
+    if (!defined('API_YAHOO_APPID')) define('API_YAHOO_APPID', true);
+    if (!defined('API_YAHOO_APPSECRET')) define('API_YAHOO_APPSECRET', true);
+    if (!defined('API_GOOGLE_APPID')) define('API_GOOGLE_APPID', true);
+    if (!defined('API_GOOGLE_APPSECRET')) define('API_GOOGLE_APPSECRET', true);
+    if (!defined('API_TWITTER_APPID')) define('API_TWITTER_APPID', true);
+    if (!defined('API_TWITTER_APPSECRET')) define('API_TWITTER_APPSECRET', true);
+    if (!defined('API_LIVE_APPID')) define('API_LIVE_APPID', true);
+    if (!defined('API_LIVE_APPSECRET')) define('API_LIVE_APPSECRET', true);
+
+    require_once(BASE_DIR . "vendor/hybridauth-start/hybridauth-start/hybridauth/Hybrid/Auth.php");
+    require_once(BASE_DIR . "vendor/phpclasses/httpclient/http.php");
+    require_once(BASE_DIR . "vendor/phpclasses/oauth-api/oauth_client.php");
+
     try {
 
         $provider = $_GET['provider'];
 
         if ($provider == 'Live') {
-            require_once(BASE_DIR . "vendor/hatframework/hat-resource-api/lib/http.php");
-            require_once(BASE_DIR . "vendor/hatframework/hat-resource-api/lib/oauth_client.php");
 
             $client = new oauth_client_class;
             $client->server = 'Microsoft';
-            $client->redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . dirname(strtok($_SERVER['REQUEST_URI'], '?')) . '/hybridauthService.php';
-            $client->client_id = '0000000048193F21';
+            $client->redirect_uri = URL . 'vendor/hatframework/hat-resource-api/services/hybridauthService.php';
+            $client->client_id = API_LIVE_APPID;
+            $client->client_secret = API_LIVE_APPSECRET;
             $application_line = __LINE__;
-            $client->client_secret = '5GtYefqlNaZFKgwyiCAdv7Qyc5hfXDxm';
-            $client->scope = 'wl.basic wl.emails wl.birthday';
+            $client->scope = 'wl.basic,wl.contacts_emails';
 
             if (($success = $client->Initialize())) {
                 if (($success = $client->Process())) {
@@ -57,7 +70,6 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
 
             if ($success) {
                 $contatos = array();
-                print_r($contatos);
                 foreach ($contacts->data as $item) {
                     $contatos[] = array(
                         "identifier"  => (property_exists($item, 'id')) ? $item->id : "",
@@ -66,7 +78,7 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
                         "photoURL"    => "",
                         "displayName" => (property_exists($item, 'name')) ? $item->name : "",
                         "description" => "",
-                        "email"       => (property_exists($item, 'email_hashes')) ? $item->email_hashes[0] : ""
+                        "email"       => (property_exists($item, 'emails')) ? $item->emails->preferred : ""
                     );
                 }
 
@@ -85,16 +97,6 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
             }
 
         } else {
-
-            $obj->LoadResource('api', 'api');
-            require_once(BASE_DIR . "vendor/hybridauth-start/hybridauth-start/hybridauth/Hybrid/Auth.php");
-
-            if (!defined('API_YAHOO_APPID')) define('API_YAHOO_APPID', true);
-            if (!defined('API_YAHOO_APPSECRET')) define('API_YAHOO_APPSECRET', true);
-            if (!defined('API_GOOGLE_APPID')) define('API_GOOGLE_APPID', true);
-            if (!defined('API_GOOGLE_APPSECRET')) define('API_GOOGLE_APPSECRET', true);
-            if (!defined('API_TWITTER_APPID')) define('API_TWITTER_APPID', true);
-            if (!defined('API_TWITTER_APPSECRET')) define('API_TWITTER_APPSECRET', true);
 
             $config = array(
                 "base_url"   => URL . "vendor/hybridauth-start/hybridauth-start/hybridauth/",
@@ -146,7 +148,7 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
 
                     "Facebook" => array(
                         "enabled"        => false,
-                        "keys"           => array( "id" => "", "secret" => "" ),
+                        "keys"           => array( "id" => "1788031274760076", "secret" => "20b75f6f5e1d34eb6330d36c664f5197" ),
                         "scope"          => "email, user_about_me, user_birthday, user_hometown, user_website,
                                     read_custom_friendlists, user_friends", // optional
                         //"display" => "popup", // optional
@@ -167,8 +169,8 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
                     "Live"     => array(
                         "enabled" => true,
                         "keys"    => array(
-                            "id"     => "0000000048193F21",
-                            "secret" => "5GtYefqlNaZFKgwyiCAdv7Qyc5hfXDxm"
+                            "id"     => API_LIVE_APPID,
+                            "secret" => API_LIVE_APPSECRET
                         )
                     ),
 
@@ -181,13 +183,8 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
                         "keys"    => array( "id" => "", "secret" => "" )
                     ),
                 ),
-                // If you want to enable logging, set 'debug_mode' to true.
-                // You can also set it to
-                // - "error" To log only error messages. Useful in production
-                // - "info" To log info and error messages (ignore debug messages)
-                "debug_mode" => true,
-                // Path to file writable by the web server. Required if 'debug_mode' is not false
-                "debug_file" => "text.txt",
+                "debug_mode" => false,
+                "debug_file" => "",
             );
 
             $hybridauth = new Hybrid_Auth($config);
