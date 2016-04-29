@@ -1,8 +1,6 @@
 <?php
 
-class apiConfigurations extends \classes\Classes\Options
-{
-
+class apiConfigurations extends \classes\Classes\Options {
     protected $files = array(
 
         'api/aws' => array(
@@ -316,7 +314,7 @@ class apiConfigurations extends \classes\Classes\Options
                     'label' => 'Chave secreta do aplicativo do Bitly',
                     'type'  => 'varchar',//varchar, text, enum
                 ),
-                'API_BITLY_DOMAIN' => array(
+                'API_BITLY_DOMAIN'    => array(
                     'name'          => 'API_BITLY_DOMAIN',
                     'label'         => 'Domínio da API do bitly',
                     'type'          => 'varchar',//varchar, text, enum
@@ -325,6 +323,28 @@ class apiConfigurations extends \classes\Classes\Options
                     'value'         => '',
                     'value_default' => ''
                 ),
+            )
+        ),
+
+        'api/live' => array(
+            'title'        => 'Live API',
+            'descricao'    => 'Configurações do Windows Live',
+            'grupo'        => 'APIs Externas',
+            'type'         => 'resource', //config, plugin, jsplugin, template, resource
+            'referencia'   => 'api/live',
+            'visibilidade' => 'admin', //'usuario', 'admin', 'webmaster'
+            'configs'      => array(
+                'API_LIVE_APPID' => array(
+                    'name'  => 'API_LIVE_APPID',
+                    'label' => 'Id do aplicativo do Windows Live',
+                    'type'  => 'varchar',//varchar, text, enum
+                ),
+
+                'API_LIVE_APPSECRET' => array(
+                    'name'  => 'API_LIVE_APPSECRET',
+                    'label' => 'Chave secreta do aplicativo do Windows Live',
+                    'type'  => 'varchar',//varchar, text, enum
+                )
             )
         ),
 
@@ -432,7 +452,6 @@ class apiConfigurations extends \classes\Classes\Options
 
             )
         ),
-
 
     );
 }
