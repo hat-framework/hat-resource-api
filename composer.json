@@ -20,21 +20,11 @@
     "aws/aws-sdk-php": "2.8.10",
     "tpyo/amazon-s3-php-class":"0.5.0",
     "hybridauth-start/hybridauth-start": "2.6.*",
-    "phpclasses/oauth-api": ">=1.0.78"
+    "hatframework/oauth-api ": ">=0.0.1"
   },
   "autoload": {
     "psr-4": {
       "resource\\api\\": "src/"
     }
   },
-  "repositories":
-  [
-    {
-      "type": "composer",
-      "url": "https:\/\/www.phpclasses.org\/"
-    },
-    {
-      "packagist": false
-    }
-  ]
 }

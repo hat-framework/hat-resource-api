@@ -37,8 +37,8 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
     if (!defined('API_LIVE_APPSECRET')) define('API_LIVE_APPSECRET', true);
 
     require_once(BASE_DIR . "vendor/hybridauth-start/hybridauth-start/hybridauth/Hybrid/Auth.php");
-    require_once(BASE_DIR . "vendor/phpclasses/httpclient/http.php");
-    require_once(BASE_DIR . "vendor/phpclasses/oauth-api/oauth_client.php");
+    require_once(BASE_DIR . "vendor/hatframework/oauth-api/httpclient/http.php");
+    require_once(BASE_DIR . "vendor/hatframework/oauth-api/oauth-api/oauth_client.php");
 
     try {
 
