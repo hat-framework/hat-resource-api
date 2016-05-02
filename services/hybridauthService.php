@@ -69,9 +69,6 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
             }
 
             if ($success) {
-		echo '<pre>';
-                print_r($contacts);
-                die();
                 $contatos = array();
                 foreach ($contacts->data as $item) {
                     $contatos[] = array(
