@@ -20,7 +20,7 @@
     "aws/aws-sdk-php": "2.8.10",
     "tpyo/amazon-s3-php-class":"0.5.0",
     "hybridauth-start/hybridauth-start": "2.6.*",
-    "hatframework/oauth-api ": ">=0.0.1"
+    "hatframework/oauth-api": ">=0.0.1"
   },
   "autoload": {
     "psr-4": {
