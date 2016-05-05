@@ -43,8 +43,9 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
     try {
 
         $provider = $_GET['provider'];
+	$live = $provider == "Live";
 
-        if ($provider == 'Live') {
+        if ($live) {
 
             $client = new oauth_client_class;
             $client->server = 'Microsoft';
