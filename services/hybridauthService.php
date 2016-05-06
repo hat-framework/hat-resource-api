@@ -44,7 +44,59 @@ if (isset($_GET['type']) && trim($_GET['type']) == 'ajax') {
 
         $provider = trim($_GET['provider']);
 
-        if (strcmp($provider, "Live") != 0) {
+        if (strcmp($provider, "Live") == 0) {
+
+            $client = new oauth_client_class;
+            $client->server = 'Microsoft';
+            $client->redirect_uri = URL . 'vendor/hatframework/hat-resource-api/services/hybridauthService.php';
+            $client->client_id = API_LIVE_APPID;
+            $client->client_secret = API_LIVE_APPSECRET;
+            $application_line = __LINE__;
+            $client->scope = 'wl.basic,wl.contacts_emails';
+
+            if (($success = $client->Initialize())) {
+                if (($success = $client->Process())) {
+                    if (strlen($client->authorization_error)) {
+                        $client->error = $client->authorization_error;
+                        $success = false;
+                    } elseif (strlen($client->access_token)) {
+                        $success = $client->CallAPI(
+                            'https://apis.live.net/v5.0/me/contacts',
+                            'GET', array(), array( 'FailOnAccessError' => true ), $contacts);
+                    }
+                }
+                $success = $client->Finalize($success);
+            }
+
+            if ($success) {
+                $contatos = array();
+                foreach ($contacts->data as $item) {
+                    $contatos[] = array(
+                        "identifier"  => (property_exists($item, 'id')) ? $item->id : "",
+                        "webSiteURL"  => "",
+                        "profileURL"  => "",
+                        "photoURL"    => "",
+                        "displayName" => (property_exists($item, 'name')) ? $item->name : "",
+                        "description" => "",
+                        "email"       => (property_exists($item, 'emails')) ? $item->emails->preferred : ""
+                    );
+                }
+
+                $return = array(
+                    "success"  => true,
+                    "contacts" => $contatos
+                );
+
+                classes\Classes\session::setVar('apiSocialLogin', json_encode($return));
+
+                // Fecha o popup que foi aberto
+                echo "<script type='text/javascript'>";
+                echo "window.close();";
+                echo "</script>";
+                die();
+            }
+
+        } else {
 
             $config = array(
                 "base_url"   => URL . "vendor/hybridauth-start/hybridauth-start/hybridauth/",
@@ -161,58 +213,6 @@ if (isset($_GET['type']) && trim($_GET['type']) == 'ajax') {
                     die();
                 }
             }
-        } else {
-
-            $client = new oauth_client_class;
-            $client->server = 'Microsoft';
-            $client->redirect_uri = URL . 'vendor/hatframework/hat-resource-api/services/hybridauthService.php';
-            $client->client_id = API_LIVE_APPID;
-            $client->client_secret = API_LIVE_APPSECRET;
-            $application_line = __LINE__;
-            $client->scope = 'wl.basic,wl.contacts_emails';
-
-            if (($success = $client->Initialize())) {
-                if (($success = $client->Process())) {
-                    if (strlen($client->authorization_error)) {
-                        $client->error = $client->authorization_error;
-                        $success = false;
-                    } elseif (strlen($client->access_token)) {
-                        $success = $client->CallAPI(
-                            'https://apis.live.net/v5.0/me/contacts',
-                            'GET', array(), array( 'FailOnAccessError' => true ), $contacts);
-                    }
-                }
-                $success = $client->Finalize($success);
-            }
-
-            if ($success) {
-                $contatos = array();
-                foreach ($contacts->data as $item) {
-                    $contatos[] = array(
-                        "identifier"  => (property_exists($item, 'id')) ? $item->id : "",
-                        "webSiteURL"  => "",
-                        "profileURL"  => "",
-                        "photoURL"    => "",
-                        "displayName" => (property_exists($item, 'name')) ? $item->name : "",
-                        "description" => "",
-                        "email"       => (property_exists($item, 'emails')) ? $item->emails->preferred : ""
-                    );
-                }
-
-                $return = array(
-                    "success"  => true,
-                    "contacts" => $contatos
-                );
-
-                classes\Classes\session::setVar('apiSocialLogin', json_encode($return));
-
-                // Fecha o popup que foi aberto
-                echo "<script type='text/javascript'>";
-                echo "window.close();";
-                echo "</script>";
-                die();
-            }
-
         }
 
     } catch (Exception $e) {
