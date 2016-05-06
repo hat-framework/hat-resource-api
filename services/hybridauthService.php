@@ -12,7 +12,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/init.php";
 $obj = new \classes\Classes\Object();
 
-if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
+if (isset($_GET['type']) && trim($_GET['type']) == 'ajax') {
 
     $obj->LoadModel('planejador/email', 'email');
     $obj->LoadModel('planejador/convite', 'convite');
@@ -42,10 +42,9 @@ if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
 
     try {
 
-        $provider = $_GET['provider'];
-	$live = $provider == "Live";
+        $provider = trim($_GET['provider']);
 
-        if ($live) {
+        if (strcmp($provider, "Live") == 0) {
 
             $client = new oauth_client_class;
             $client->server = 'Microsoft';
