@@ -42,9 +42,7 @@ if (isset($_GET['type']) && trim($_GET['type']) == 'ajax') {
 
     try {
 
-        $provider = trim($_GET['provider']);
-
-        if (strcmp($provider, "Live") == 0) {
+        if (!isset($_GET['provider']) || (isset($_GET['provider']) && $_GET['provider'] == "Live")) {
 
             $client = new oauth_client_class;
             $client->server = 'Microsoft';
@@ -189,7 +187,7 @@ if (isset($_GET['type']) && trim($_GET['type']) == 'ajax') {
 
             $hybridauth = new Hybrid_Auth($config);
 
-            $authProvider = $hybridauth->authenticate($provider);
+            $authProvider = $hybridauth->authenticate($_GET['provider']);
 
             if ($authProvider->isUserConnected()) {
 
